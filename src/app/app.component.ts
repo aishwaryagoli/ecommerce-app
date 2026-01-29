@@ -1,13 +1,39 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [CommonModule, FormsModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'ecommerce-app';
+
+  productName: string = '';
+  message: string = '';
+
+  // later this will be Azure Function URL
+  apiUrl = 'https://example.azurewebsites.net/api/orders';
+
+  constructor(private http: HttpClient) {}
+
+  placeOrder() {
+    const order = {
+      product: this.productName,
+      date: new Date()
+    };
+
+    this.http.post(this.apiUrl, order).subscribe({
+      next: () => {
+        this.message = '✅ Order placed successfully!';
+        this.productName = '';
+      },
+      error: () => {
+        this.message = '❌ Failed to place order';
+      }
+    });
+  }
 }
