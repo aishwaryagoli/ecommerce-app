@@ -16,7 +16,7 @@ export class AppComponent {
   message: string = '';
 
   // later this will be Azure Function URL
-  apiUrl = 'https://example.azurewebsites.net/api/orders';
+  apiUrl = 'https://ecom-function-app-a8g4bpgfhbfxdxep.southindia-01.azurewebsites.net/api/ProcessOrder';
 
   constructor(private http: HttpClient) {}
 
