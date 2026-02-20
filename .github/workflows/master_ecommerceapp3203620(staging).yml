@@ -1,4 +1,4 @@
-name: Build and deploy Node.js app to Azure Web App - ecommerceapp3203620
+name: Build and deploy Node.js app to Azure Web App - ecommerceapp32036200
 
 on:
   push:
