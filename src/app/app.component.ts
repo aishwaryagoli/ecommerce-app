@@ -15,23 +15,29 @@ export class AppComponent {
   productName: string = '';
   message: string = '';
 
-  // later this will be Azure Function URL
-  apiUrl = 'https://ecom-function-app-a8g4bpgfhbfxdxep.southindia-01.azurewebsites.net/api/ProcessOrder';
+  apiUrl =
+    'https://ecom-function-app-a8g4bpgfhbfxdxep.southindia-01.azurewebsites.net/api/ProcessOrder';
 
   constructor(private http: HttpClient) {}
 
   placeOrder() {
+    if (!this.productName.trim()) {
+      this.message = '⚠️ Please enter a product name';
+      return;
+    }
+
     const order = {
       product: this.productName,
-      date: new Date()
+      date: new Date().toISOString()
     };
 
-    this.http.post(this.apiUrl, order).subscribe({
-      next: () => {
-        this.message = '✅ Order placed successfully!';
+    this.http.post<any>(this.apiUrl, order).subscribe({
+      next: (res) => {
+        this.message = `✅ ${res.message}`;
         this.productName = '';
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         this.message = '❌ Failed to place order';
       }
     });
